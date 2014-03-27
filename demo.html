@@ -1,0 +1,35 @@
+<!doctype html>
+<meta charset="UTF-8"/>
+<title>Demo</title>
+<script src="_unit.js"></script>
+
+<p>Please view the console of this page for results.</p>
+
+<script>
+
+	// run a piece of code that relies on certain modules
+	unit.run(function (app) {
+
+		console.log('func1');
+		console.log(app.test1);
+		console.log(app.test2);
+
+	}).after(['test1', 'test2']);
+
+	// define a module with some dependencies
+	unit.def('test2', function () {
+
+		console.log('func2');
+		return 'result2';
+
+	}).after('test1');
+
+	// define a module with no dependencies
+	unit.def('test1', function () {
+
+		console.log('func3');
+		return 'result1';
+
+	}).done();
+
+</script>
