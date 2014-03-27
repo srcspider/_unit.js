@@ -91,7 +91,74 @@ You shouldn't have problems with `_unit.js` and combining files but if you have
 other files with underscores in the name and they require `_unit.js` to work
 the please just add another underscore to the name to make sure it's among the
 first files when combined; or just get rid of the underscore from the others.
-Or manually force `_unit.js` to be first.
+Or manually force `_unit.js` to be first. Simplest way to do that is to just
+load it seperatly along with other "core dependencies" (eg. underscore, etc) in
+it's own independent `vendor.js`, just *one* extra http request saves a lot of
+heaches that way.
+
+## Using `unit` with frameworks
+
+Should be fairly straight forward, but here are some examples just to get you
+going if you feel lost:
+
+**Backone**
+```javascript
+unit.def('Thread', function (app) {
+
+	return Backbone.Collection.extend({
+		url: '/api/threads',
+		model: app.Post
+	});
+
+}).after('Post');
+```
+```javascript
+unit.def('Post', function (app) {
+
+	return Backbone.Model.extend({
+		urlRoot: '/api/posts'
+	});
+
+}).done();
+
+**reactjs**
+```javascript
+/** @jsx React.DOM */
+unit.def('jsx.Page', function (app) {
+
+	var Navbar = app.jsx.Navbar;
+	var FancyForm = app.jsx.FancyForm;
+
+	return React.createClass({
+
+		displayName: 'Page',
+
+		render: function () {
+			return (
+				<div className="example">
+					<h1>Demo</h1>
+					<Navbar/>
+					<FancyForm/>
+				</div>
+			);
+		},
+
+	});
+
+}).after(['jsx.Navbar', 'jsx.FancyForm']);
+```
+
+**any javascript class-style wrapper**
+```javascript
+unit.def('Instance', function () {
+
+	return Class.extend({
+		// your methods and attributes
+	});
+
+}).done();
+```
+
 
 ## All done
 
