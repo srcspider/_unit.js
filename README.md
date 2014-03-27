@@ -2,11 +2,11 @@
 define modules in your code so you can combine all your files and not have 
 to worry about it loading your code in the wrong order.
 
- - you don't need node
- - you don't need any sophisticated server backend things
- - no sophisticated build system required; just uglify your code into one file
+ - you don't need nodejs
+ - you don't need any sophisticated server backend
+ - you don't need any sophisticated build system; just uglify your code into one file
    and it will just work
- - there's no million requests and dynamic script loading
+ - there's no http requests involved
 
 ## Syntax
 
