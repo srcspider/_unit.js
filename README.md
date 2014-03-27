@@ -123,7 +123,7 @@ unit.def('Post', function (app) {
 ```
 
 **reactjs**
-```javascript
+```jsx
 /** @jsx React.DOM */
 unit.def('jsx.Page', function (app) {
 
