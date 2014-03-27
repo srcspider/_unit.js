@@ -14,7 +14,10 @@
 		console.log(app.test1);
 		console.log(app.test2);
 
-	}).after(['test1', 'test2']);
+		// modules with dot names get expanded
+		console.log(app.fancy.unit.example);
+
+	}).after(['test1', 'test2', 'fancy.unit.example']);
 
 	// define a module with some dependencies
 	unit.def('test2', function () {
@@ -29,6 +32,14 @@
 
 		console.log('func3');
 		return 'result1';
+
+	}).done();
+
+	// define a module with dot notation
+	unit.def('fancy.unit.example', function () {
+
+		console.log('func4');
+		return 'result3';
 
 	}).done();
 

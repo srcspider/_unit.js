@@ -1,5 +1,5 @@
 `_unit.js` is a short and sweet module definition utility. It allows you to
-define modules in your code so you can combine all your files and not have 
+define modules in your code so you can combine all your files and not have
 to worry about it loading your code in the wrong order.
 
  - you don't need nodejs
@@ -68,12 +68,37 @@ unit.run(function (app) {
 
 Obviously no need to return anything when just running code.
 
+Sometimes it's nice to have some sugar to the module definition. In `_unit.js`
+if you define a module with dot notation it will get converted to a property
+chain.
+
+```javascript
+unit.run(function (app) {
+
+	// note the syntax
+	console.log(app.pretty.unit.name);
+
+}).after(['pretty.unit.name']);
+
+unit.def('pretty.unit.name', function () {
+	// your stuff goes here
+}).done();
+```
+
+## Ensuring `unit` is available
+
 You shouldn't have problems with `_unit.js` and combining files but if you have
 other files with underscores in the name and they require `_unit.js` to work
 the please just add another underscore to the name to make sure it's among the
 first files when combined; or just get rid of the underscore from the others.
 Or manually force `_unit.js` to be first.
 
-That's all there is to `_unit.js`. If you need something more "complicated"
-then feel free to check out [browserify](http://browserify.org/),
-[requirejs](http://requirejs.org/) or [yepnope](http://yepnopejs.com/).
+## All done
+
+That's all there is to `_unit.js`.
+
+If you need something more "complicated" then feel free to check out
+
+ - [browserify](http://browserify.org/)
+ - [requirejs](http://requirejs.org/)
+ - [yepnope](http://yepnopejs.com/)

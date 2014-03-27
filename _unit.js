@@ -83,7 +83,24 @@
 			if (resolved_names.indexOf(name) != -1) {
 				throw "Error: Duplicate module definition for module ["+name+"].";
 			}
-			namespace[name] = func(namespace);
+
+			var parts = name.split('.');
+			if (parts.length > 1) {
+				var root = namespace;
+				for (var i = 0; i < parts.length - 1; ++i) {
+					var part = parts[i];
+					if ( ! (part in root)) {
+						root[part] = {};
+					}
+					root = root[part];
+				}
+
+				root[parts[parts.length - 1]] = func(namespace);
+			}
+			else { // parts.length == 1
+				namespace[name] = func(namespace);
+			}
+
 			resolved_names.push(name);
 		};
 
