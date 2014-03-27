@@ -43,4 +43,14 @@
 
 	}).done();
 
+	// this module is intentionally missing its dependency
+	unit.def('failed.dependency', function () {
+
+		// try typing unit.debug() in console
+
+		return 'result4';
+
+	}).after('non.existent.dependency');
+
+
 </script>

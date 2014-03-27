@@ -53,6 +53,32 @@
 	// Public namespace functions
 	// --------------------------
 
+	app.debug = function () {
+		if (pending.length > 0) {
+			var waiting_list = [];
+			for (var i = 0; i < pending.length; ++i) {
+				var entry = pending[i];
+				for (var j = 0; j < entry.deps.length; ++j) {
+					var dependency = entry.deps[j];
+					if (waiting_list.indexOf(dependency) == -1) {
+						waiting_list.push(dependency);
+					}
+				}
+			}
+			console.log(pending.length + (pending.length != 1 ? ' modules are' : ' module is') + ' still waiting for dependencies.')
+			console.log('All missing dependencies:');
+			for (var i = 0; i < waiting_list.length; ++i) {
+				console.log(' - ' + waiting_list[i]);
+			}
+		}
+		else { // pending.length == 0
+			console.log('No detectable issues found.');
+			console.log('All modules and tasks have resolved.');
+		}
+		// pretty print
+		return null;
+	};
+
 	app.run = function (func) {
 		var resolve = function () {
 			func(namespace);
@@ -94,7 +120,6 @@
 					}
 					root = root[part];
 				}
-
 				root[parts[parts.length - 1]] = func(namespace);
 			}
 			else { // parts.length == 1

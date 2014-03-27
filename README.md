@@ -160,6 +160,11 @@ unit.def('Instance', function () {
 }).done();
 ```
 
+## Debugging
+
+`_unit.js` comes with `debug()` command. In the console simply invoke it to
+check that all modules were loaded properly.
+
 ## All done
 
 That's all there is to `_unit.js`.
