@@ -89,7 +89,7 @@ unit.def('pretty.unit.name', function () {
 
 You shouldn't have problems with `_unit.js` and combining files but if you have
 other files with underscores in the name and they require `_unit.js` to work
-the please just add another underscore to the name to make sure it's among the
+then please just add another underscore to the name to make sure it's among the
 first files when combined; or just get rid of the underscore from the others.
 Or manually force `_unit.js` to be first. Simplest way to do that is to just
 load it seperatly along with other "core dependencies" (eg. underscore, etc) in
@@ -158,7 +158,6 @@ unit.def('Instance', function () {
 
 }).done();
 ```
-
 
 ## All done
 
