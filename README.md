@@ -1,6 +1,6 @@
 `_unit.js` is a short and sweet module definition utility. It allows you to
-define modules in your code so you can combine all your files in any order and
-not have to worry about it working.
+define modules in your code so you can combine all your files and not have 
+to worry about it loading your code in the wrong order.
 
  - you don't need node
  - you don't need any sophisticated server backend things
@@ -71,6 +71,7 @@ You shouldn't have problems with `_unit.js` and combining files but if you have
 other files with underscores in the name and they require `_unit.js` to work
 the please just add another underscore to the name to make sure it's among the
 first files when combined; or just get rid of the underscore from the others.
+Or manually force `_unit.js` to be first.
 
 That's all there is to `_unit.js`. If you need something more "complicated"
 then feel free to check out [browserify](http://browserify.org/),
