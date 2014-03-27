@@ -163,7 +163,9 @@ unit.def('Instance', function () {
 ## Debugging
 
 `_unit.js` comes with `debug()` command. In the console simply invoke it to
-check that all modules were loaded properly.
+check that all modules were loaded properly. You may also set
+`unit.selfdebug(1.5);` to have a debug executed automatically. You may include
+multiple checkpoints if you wish.
 
 ## All done
 

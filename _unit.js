@@ -53,6 +53,33 @@
 	// Public namespace functions
 	// --------------------------
 
+	/**
+	 * Automatically triggers unit.debug() at provided interval(s). Multiple
+	 * values can be provided. If the first interval is triggered and no errors
+	 * are detected the next intervals won't be triggered.
+	 */
+	app.selfdebug = function () {
+		var args = arguments;
+		var noerrors = false;
+
+		var schedule = function (timeout) {
+			setTimeout(function () {
+				if ( ! noerrors) {
+					console.log('------------')
+					console.log('Scheduled unit.debug @ ' + timeout + 's')
+					noerrors = ! app.debug();
+				};
+			}, timeout * 1000);
+		}
+
+		for (var i = 0; i < args.length; ++i) {
+			schedule(args[i]);
+		}
+	};
+
+	/**
+	 * Diagnoses potential problems with current state. eg. unresolved modules
+	 */
 	app.debug = function () {
 		if (pending.length > 0) {
 			var waiting_list = [];
@@ -65,20 +92,26 @@
 					}
 				}
 			}
+
 			console.log(pending.length + (pending.length != 1 ? ' modules are' : ' module is') + ' still waiting for dependencies.')
 			console.log('All missing dependencies:');
+
 			for (var i = 0; i < waiting_list.length; ++i) {
 				console.log(' - ' + waiting_list[i]);
 			}
+
+			return true;
 		}
 		else { // pending.length == 0
 			console.log('No detectable issues found.');
 			console.log('All modules and tasks have resolved.');
+			return false;
 		}
-		// pretty print
-		return null;
 	};
 
+	/**
+	 * Execute code when dependencies resolve.
+	 */
 	app.run = function (func) {
 		var resolve = function () {
 			func(namespace);
@@ -104,6 +137,9 @@
 		};
 	};
 
+	/**
+	 * Define module.
+	 */
 	app.def = function (name, func) {
 		var define = function () {
 			if (resolved_names.indexOf(name) != -1) {
