@@ -40,8 +40,9 @@ unit.def('your_module', function (app) {
 }).after(['dependecy_1', 'dependency_2']);
 ```
 
-Feel free to access loading modules via `unit.ns`, this is what's passed as
-your first paramter.
+Feel free to access loaded modules via `unit.ns`, this is what's passed as
+your first paramter. You should never have to do this for anything more then
+dynamic inspection though.
 
 If you just need to define a module with no dependencies use `done()` instead
 of `after()`.
