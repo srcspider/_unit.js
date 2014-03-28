@@ -19,6 +19,9 @@
 	// incomplete modules
 	var pending = [];
 
+	// definition lookup
+	var defined_names = [];
+
 	// solve any missing entries
 	var attempt_to_resolve = function () {
 		var unresolved = [];
@@ -65,7 +68,7 @@
 		var schedule = function (timeout) {
 			setTimeout(function () {
 				if ( ! noerrors) {
-					console.log('------------')
+					console.log('')
 					console.log('Scheduled unit.debug @ ' + timeout + 's')
 					noerrors = ! app.debug();
 				};
@@ -82,6 +85,10 @@
 	 */
 	app.debug = function () {
 		if (pending.length > 0) {
+
+			// Calculate unresolved dependencies
+			// ---------------------------------
+
 			var waiting_list = [];
 			for (var i = 0; i < pending.length; ++i) {
 				var entry = pending[i];
@@ -93,18 +100,40 @@
 				}
 			}
 
-			console.log(pending.length + (pending.length != 1 ? ' modules are' : ' module is') + ' still waiting for dependencies.')
-			console.log('All missing dependencies:');
+			console.log('unitjs >> ' + pending.length + (pending.length != 1 ? ' modules are' : ' module is') + ' still waiting for dependencies.')
+			console.log('unitjs >> All unresolved dependencies:');
 
 			for (var i = 0; i < waiting_list.length; ++i) {
 				console.log(' - ' + waiting_list[i]);
 			}
 
+			// Calculate missing dependencies
+			// ------------------------------
+
+			var missing_modules = [];
+			for (var i = 0; i < waiting_list.length; ++i) {
+				var entry = waiting_list[i];
+				if (defined_names.indexOf(entry) == -1) {
+					missing_modules.push(entry);
+				}
+			}
+
+			if (missing_modules.length == 0) {
+				console.log('unitjs >> All unresolved dependencies were defined.');
+			}
+			else { // length > 0
+				console.log('unitjs >> ' + missing_modules.length + (missing_modules.length != 1 ? ' modules have' : ' module has') + ' not been defined.');
+				console.log('unitjs >> All undefined modules:');
+				for (var i = 0; i < missing_modules.length; ++i) {
+					console.log(' - ' + missing_modules[i] );
+				}
+			}
+
 			return true;
 		}
 		else { // pending.length == 0
-			console.log('No detectable issues found.');
-			console.log('All modules and tasks have resolved.');
+			console.log('unitjs >> No detectable issues found.');
+			console.log('unitjs >> All modules and tasks have resolved.');
 			return false;
 		}
 	};
@@ -141,6 +170,10 @@
 	 * Define module.
 	 */
 	app.def = function (name, func) {
+
+		// store name for debug purposes
+		defined_names.push(name);
+
 		var define = function () {
 			if (resolved_names.indexOf(name) != -1) {
 				throw "Error: Duplicate module definition for module ["+name+"].";
