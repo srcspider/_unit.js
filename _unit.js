@@ -119,7 +119,7 @@
 			}
 
 			if (missing_modules.length == 0) {
-				console.log('unitjs >> All unresolved dependencies were defined.');
+				console.log('unitjs >> All unresolved dependencies were defined. Please check for errors.');
 			}
 			else { // length > 0
 				console.log('unitjs >> ' + missing_modules.length + (missing_modules.length != 1 ? ' modules have' : ' module has') + ' not been defined.');
@@ -171,14 +171,15 @@
 	 */
 	app.def = function (name, func) {
 
-		// store name for debug purposes
-		defined_names.push(name);
+		if (defined_names.indexOf(name) != -1) {
+			throw "Error: Duplicate module definition for module ["+name+"].";
+		}
+		else { // name is unique
+			// store name for debug purposes
+			defined_names.push(name);
+		}
 
 		var define = function () {
-			if (resolved_names.indexOf(name) != -1) {
-				throw "Error: Duplicate module definition for module ["+name+"].";
-			}
-
 			var parts = name.split('.');
 			if (parts.length > 1) {
 				var root = namespace;
